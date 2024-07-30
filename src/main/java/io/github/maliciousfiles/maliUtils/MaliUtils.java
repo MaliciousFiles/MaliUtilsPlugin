@@ -2,6 +2,7 @@ package io.github.maliciousfiles.maliUtils;
 
 import io.github.maliciousfiles.maliUtils.invsee.InvseeCommand;
 import io.github.maliciousfiles.maliUtils.invsee.InvseeHandler;
+import io.github.maliciousfiles.maliUtils.swap.SwapCommand;
 import io.github.maliciousfiles.maliUtils.vanish.ListVanishCommand;
 import io.github.maliciousfiles.maliUtils.smite.SmiteCommand;
 import io.github.maliciousfiles.maliUtils.vanish.VanishCommand;
@@ -18,8 +19,6 @@ public final class MaliUtils extends JavaPlugin {
         - health link
         - swap players
         - beepers
-        - invsee
-        - smite
         - demon mobs
      */
 
@@ -38,6 +37,7 @@ public final class MaliUtils extends JavaPlugin {
         registerCommand("listvanish", new ListVanishCommand());
         registerCommand("smite", new SmiteCommand());
         registerCommand("invsee", new InvseeCommand());
+        registerCommand("swap", new SwapCommand());
 
         Bukkit.getPluginManager().registerEvents(new VanishHandler(), this);
         Bukkit.getPluginManager().registerEvents(new InvseeHandler(), this);

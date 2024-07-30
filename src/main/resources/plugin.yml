@@ -23,3 +23,7 @@ commands:
     description: View the inventory of another player.
     usage: /invsee <player>
     permission: op
+  swap:
+    description: Swap the location of two players.
+    usage: /swap <player1> <player2>
+    permission: op
