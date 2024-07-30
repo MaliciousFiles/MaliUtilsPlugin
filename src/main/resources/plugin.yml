@@ -15,3 +15,7 @@ commands:
     usage: /listvanish
     permission: op
     aliases: [lv]
+  smite:
+    description: Smite a player into the air.
+    usage: /smite <player>
+    permission: op

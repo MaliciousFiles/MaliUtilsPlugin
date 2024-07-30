@@ -1,6 +1,7 @@
 package io.github.maliciousfiles.maliUtils;
 
 import io.github.maliciousfiles.maliUtils.vanish.ListVanishCommand;
+import io.github.maliciousfiles.maliUtils.vanish.SmiteCommand;
 import io.github.maliciousfiles.maliUtils.vanish.VanishCommand;
 import io.github.maliciousfiles.maliUtils.vanish.VanishHandler;
 import org.bukkit.Bukkit;
@@ -35,6 +36,7 @@ public final class MaliUtils extends JavaPlugin {
 
         registerCommand("vanish", new VanishCommand());
         registerCommand("listvanish", new ListVanishCommand());
+        registerCommand("smite", new SmiteCommand());
 
         Bukkit.getPluginManager().registerEvents(new VanishHandler(), this);
     }
