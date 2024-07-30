@@ -4,3 +4,13 @@ main: io.github.maliciousfiles.maliUtils.MaliUtils
 api-version: '1.21'
 authors: [ MaliciousFiles ]
 description: A plugin with various *utilities* for a Minecraft server admin.
+commands:
+  vanish:
+    description: Vanish from other players.
+    usage: /vanish [player]
+    permission: op
+  listvanish:
+    description: List all players that are vanished.
+    usage: /listvanish
+    permission: op
+    aliases: [lv]
