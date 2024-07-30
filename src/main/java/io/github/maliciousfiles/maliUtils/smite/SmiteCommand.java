@@ -1,4 +1,4 @@
-package io.github.maliciousfiles.maliUtils.vanish;
+package io.github.maliciousfiles.maliUtils.smite;
 
 import io.github.maliciousfiles.maliUtils.utils.CommandUtil;
 import org.bukkit.Bukkit;
@@ -16,9 +16,14 @@ import java.util.List;
 public class SmiteCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (args.length == 0) {
+            CommandUtil.error(sender, "No player specified");
+            return true;
+        }
+
         Player target = Bukkit.getPlayer(args[0]);
         if (target == null) {
-            CommandUtil.error(sender, "§cPlayer not found.");
+            CommandUtil.error(sender, "Player not found");
             return true;
         }
 

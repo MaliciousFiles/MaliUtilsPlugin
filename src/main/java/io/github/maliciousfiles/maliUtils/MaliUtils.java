@@ -1,15 +1,15 @@
 package io.github.maliciousfiles.maliUtils;
 
+import io.github.maliciousfiles.maliUtils.invsee.InvseeCommand;
+import io.github.maliciousfiles.maliUtils.invsee.InvseeHandler;
 import io.github.maliciousfiles.maliUtils.vanish.ListVanishCommand;
-import io.github.maliciousfiles.maliUtils.vanish.SmiteCommand;
+import io.github.maliciousfiles.maliUtils.smite.SmiteCommand;
 import io.github.maliciousfiles.maliUtils.vanish.VanishCommand;
 import io.github.maliciousfiles.maliUtils.vanish.VanishHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Optional;
 
 public final class MaliUtils extends JavaPlugin {
 
@@ -37,8 +37,10 @@ public final class MaliUtils extends JavaPlugin {
         registerCommand("vanish", new VanishCommand());
         registerCommand("listvanish", new ListVanishCommand());
         registerCommand("smite", new SmiteCommand());
+        registerCommand("invsee", new InvseeCommand());
 
         Bukkit.getPluginManager().registerEvents(new VanishHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new InvseeHandler(), this);
     }
 
     @Override

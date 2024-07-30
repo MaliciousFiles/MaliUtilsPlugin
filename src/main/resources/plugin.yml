@@ -19,3 +19,7 @@ commands:
     description: Smite a player into the air.
     usage: /smite <player>
     permission: op
+  invsee:
+    description: View the inventory of another player.
+    usage: /invsee <player>
+    permission: op
