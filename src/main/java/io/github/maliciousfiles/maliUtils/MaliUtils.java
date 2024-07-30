@@ -1,5 +1,6 @@
 package io.github.maliciousfiles.maliUtils;
 
+import io.github.maliciousfiles.maliUtils.vanish.ListVanishCommand;
 import io.github.maliciousfiles.maliUtils.vanish.VanishCommand;
 import io.github.maliciousfiles.maliUtils.vanish.VanishHandler;
 import org.bukkit.Bukkit;
@@ -12,7 +13,7 @@ import java.util.Optional;
 public final class MaliUtils extends JavaPlugin {
 
     /* TODO
-        - vanish
+        - prevent /msg to vanished
         - health link
         - swap players
         - beepers
@@ -33,6 +34,7 @@ public final class MaliUtils extends JavaPlugin {
         instance = this;
 
         registerCommand("vanish", new VanishCommand());
+        registerCommand("listvanish", new ListVanishCommand());
 
         Bukkit.getPluginManager().registerEvents(new VanishHandler(), this);
     }

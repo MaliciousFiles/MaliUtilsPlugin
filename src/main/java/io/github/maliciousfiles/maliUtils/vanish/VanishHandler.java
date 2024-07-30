@@ -1,23 +1,22 @@
 package io.github.maliciousfiles.maliUtils.vanish;
 
-import com.destroystokyo.paper.event.server.AsyncTabCompleteEvent;
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import io.github.maliciousfiles.maliUtils.MaliUtils;
 import io.github.maliciousfiles.maliUtils.utils.ConfigObject;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.minecraft.network.protocol.game.*;
-import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.server.TabCompleteEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class VanishHandler implements Listener {
 
@@ -27,11 +26,6 @@ public class VanishHandler implements Listener {
     public void onPing(PaperServerListPingEvent evt) {
         evt.getListedPlayers().removeIf(p -> isVanished(p.id()));
         evt.setNumPlayers(evt.getListedPlayers().size());
-    }
-
-    @EventHandler
-    public void onTabComplete(TabCompleteEvent evt) {
-        Bukkit.broadcastMessage(evt.getCompletions().toString());
     }
 
     @EventHandler
@@ -60,10 +54,6 @@ public class VanishHandler implements Listener {
         return vanished.get().contains(uuid.toString());
     }
 
-    private static boolean isVanished(String uuid) {
-        return vanished.get().contains(uuid);
-    }
-
     private static void vanishAll(Player vanisher) {
         Bukkit.getOnlinePlayers().forEach(p -> { if (p != vanisher) vanish(vanisher, p); });
     }
@@ -73,23 +63,12 @@ public class VanishHandler implements Listener {
     }
 
     private static void vanish(Player vanisher, Player viewer) {
-        ((CraftPlayer) viewer).getHandle().connection.send(new ClientboundBundlePacket(List.of(
-                new ClientboundPlayerInfoRemovePacket(List.of(vanisher.getUniqueId())),
-                new ClientboundRemoveEntitiesPacket(vanisher.getEntityId())
-        )));
+        viewer.hidePlayer(MaliUtils.instance, vanisher);
     }
 
     private static void unvanish(Player vanisher, Player viewer) {
-        ServerPlayer vanisherHandle = ((CraftPlayer) vanisher).getHandle();
-        ServerPlayer viewerHandle = ((CraftPlayer) viewer).getHandle();
-
-        viewerHandle.connection.send(new ClientboundBundlePacket(List.of(
-                new ClientboundPlayerInfoUpdatePacket(EnumSet.copyOf(
-                        Arrays.stream(ClientboundPlayerInfoUpdatePacket.Action.values()).toList()), List.of(vanisherHandle)),
-                vanisherHandle.getAddEntityPacket(viewerHandle.moonrise$getTrackedEntity().serverEntity),
-                new ClientboundSetEntityDataPacket(vanisherHandle.getId(), vanisherHandle.getEntityData().getNonDefaultValues()),
-                new ClientboundSystemChatPacket(Component.text("%s joined the game".formatted(vanisher.getName())).color(NamedTextColor.YELLOW), false)
-        )));
+        viewer.showPlayer(MaliUtils.instance, vanisher);
+        viewer.sendMessage(Component.text("%s joined the game".formatted(vanisher.getName())).color(NamedTextColor.YELLOW));
     }
 
     public static boolean toggle(UUID uuid) {
@@ -112,6 +91,11 @@ public class VanishHandler implements Listener {
             }
         });
 
+        ((CraftWorld) Bukkit.getWorlds().get(0)).getHandle().updateSleepingPlayerList();
         return ret[0];
+    }
+
+    public static List<OfflinePlayer> getVanished() {
+        return vanished.get().stream().map(s->Bukkit.getOfflinePlayer(UUID.fromString(s))).toList();
     }
 }

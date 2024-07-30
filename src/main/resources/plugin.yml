@@ -9,6 +9,7 @@ commands:
     description: Vanish from other players.
     usage: /vanish [player]
     permission: op
+    aliases: [v]
   listvanish:
     description: List all players that are vanished.
     usage: /listvanish
