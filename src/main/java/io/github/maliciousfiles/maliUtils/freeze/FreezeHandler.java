@@ -132,6 +132,5 @@ public class FreezeHandler implements Listener {
         public void handleCustomPayload(ServerboundCustomPayloadPacket packet) {}
         public void handleResourcePackResponse(ServerboundResourcePackPacket packet) {}
         public void handleCookieResponse(ServerboundCookieResponsePacket packet) {}
-
     }
 }
