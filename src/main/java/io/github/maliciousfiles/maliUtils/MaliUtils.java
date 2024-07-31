@@ -1,5 +1,6 @@
 package io.github.maliciousfiles.maliUtils;
 
+import io.github.maliciousfiles.maliUtils.demons.DemonCommand;
 import io.github.maliciousfiles.maliUtils.healthlink.HealthLinkCommand;
 import io.github.maliciousfiles.maliUtils.healthlink.HealthLinkHandler;
 import io.github.maliciousfiles.maliUtils.invsee.InvseeCommand;
@@ -19,7 +20,6 @@ public final class MaliUtils extends JavaPlugin {
 
     /* TODO
         - prevent /msg to vanished
-        - health link
         - beepers
         - demon mobs
      */
@@ -43,6 +43,7 @@ public final class MaliUtils extends JavaPlugin {
         registerCommand("invsee", new InvseeCommand());
         registerCommand("swap", new SwapCommand());
         registerCommand("healthlink", new HealthLinkCommand());
+        registerCommand("demon", new DemonCommand());
 
         Bukkit.getPluginManager().registerEvents(new VanishHandler(), this);
         Bukkit.getPluginManager().registerEvents(new InvseeHandler(), this);

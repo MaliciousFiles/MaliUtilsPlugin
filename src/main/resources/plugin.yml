@@ -31,3 +31,7 @@ commands:
     usage: /healthlink <create/delete/join/leave/set> <group/player> [player/health]
     permission: op
     aliases: [hl]
+  demon:
+    description: Summon a demon animal.
+    usage: /demon <facade>
+    permission: op
