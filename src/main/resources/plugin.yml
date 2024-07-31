@@ -35,3 +35,7 @@ commands:
     description: Summon a demon animal.
     usage: /demon <facade>
     permission: op
+  freeze:
+    description: Freeze a player in place.
+    usage: /freeze <player>
+    permission: op

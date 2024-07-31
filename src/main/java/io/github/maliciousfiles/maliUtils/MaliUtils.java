@@ -1,6 +1,8 @@
 package io.github.maliciousfiles.maliUtils;
 
 import io.github.maliciousfiles.maliUtils.demons.DemonCommand;
+import io.github.maliciousfiles.maliUtils.freeze.FreezeCommand;
+import io.github.maliciousfiles.maliUtils.freeze.FreezeHandler;
 import io.github.maliciousfiles.maliUtils.healthlink.HealthLinkCommand;
 import io.github.maliciousfiles.maliUtils.healthlink.HealthLinkHandler;
 import io.github.maliciousfiles.maliUtils.invsee.InvseeCommand;
@@ -17,12 +19,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MaliUtils extends JavaPlugin {
-
-    /* TODO
-        - prevent /msg to vanished
-        - beepers
-        - demon mobs
-     */
 
     public static MaliUtils instance;
 
@@ -44,14 +40,16 @@ public final class MaliUtils extends JavaPlugin {
         registerCommand("swap", new SwapCommand());
         registerCommand("healthlink", new HealthLinkCommand());
         registerCommand("demon", new DemonCommand());
+        registerCommand("freeze", new FreezeCommand());
 
         Bukkit.getPluginManager().registerEvents(new VanishHandler(), this);
         Bukkit.getPluginManager().registerEvents(new InvseeHandler(), this);
         Bukkit.getPluginManager().registerEvents(new HealthLinkHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new FreezeHandler(), this);
     }
 
     @Override
     public void onDisable() {
-
+        FreezeHandler.disable();
     }
 }
