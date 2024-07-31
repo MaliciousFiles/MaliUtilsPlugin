@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.sounds.SoundEvent;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.animal.goat.Goat;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootTable;
 import org.apache.commons.lang3.StringUtils;
 
 public class DemonAnimal extends Spider {
@@ -28,6 +30,11 @@ public class DemonAnimal extends Spider {
         getEntityData().packDirty();
 
         this.type = type;
+    }
+
+    @Override
+    protected ResourceKey<LootTable> getDefaultLootTable() {
+        return type.getDefaultLootTable();
     }
 
     @Override
