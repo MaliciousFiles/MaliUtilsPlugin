@@ -22,8 +22,8 @@ public class SwapCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        Player target1 = Bukkit.getPlayer(args[0]);
-        Player target2 = Bukkit.getPlayer(args[1]);
+        Player target1 = Bukkit.getPlayerExact(args[0]);
+        Player target2 = Bukkit.getPlayerExact(args[1]);
         if (target1 == null || target2 == null ) {
             CommandUtil.error(sender, "Player not found");
             return true;

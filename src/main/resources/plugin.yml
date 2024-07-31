@@ -9,7 +9,6 @@ commands:
     description: Vanish from other players.
     usage: /vanish [player]
     permission: op
-    aliases: [v]
   listvanish:
     description: List all players that are vanished.
     usage: /listvanish
@@ -27,3 +26,8 @@ commands:
     description: Swap the location of two players.
     usage: /swap <player1> <player2>
     permission: op
+  healthlink:
+    description: Manage healthlink groups.
+    usage: /healthlink <create/delete/join/leave/set> <group/player> [player/health]
+    permission: op
+    aliases: [hl]

@@ -72,7 +72,7 @@ public class VanishHandler implements Listener {
     }
 
     public static boolean toggle(UUID uuid) {
-        Player player = Bukkit.getPlayer(uuid);
+        Player player = Bukkit.getPlayerExact(uuid);
         String str = uuid.toString();
 
         boolean[] ret = new boolean[1];

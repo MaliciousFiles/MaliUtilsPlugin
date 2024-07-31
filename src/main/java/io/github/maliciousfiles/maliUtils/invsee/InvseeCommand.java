@@ -26,7 +26,7 @@ public class InvseeCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        Player target = Bukkit.getPlayer(args[0]);
+        Player target = Bukkit.getPlayerExact(args[0]);
         if (target == null) {
             CommandUtil.error(sender, "Player not found");
             return true;
