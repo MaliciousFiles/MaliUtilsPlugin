@@ -3,6 +3,7 @@ package io.github.maliciousfiles.maliUtils.demons;
 import io.github.maliciousfiles.maliUtils.utils.CommandUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Animal;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,7 +31,7 @@ public class DemonCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        EntityType<?> type = args[0].equalsIgnoreCase("sheep") ? EntityType.SHEEP :
+        EntityType<? extends Animal> type = args[0].equalsIgnoreCase("sheep") ? EntityType.SHEEP :
                 args[0].equalsIgnoreCase("pig") ? EntityType.PIG :
                 args[0].equalsIgnoreCase("cow") ? EntityType.COW :
                 args[0].equalsIgnoreCase("chicken") ? EntityType.CHICKEN :
