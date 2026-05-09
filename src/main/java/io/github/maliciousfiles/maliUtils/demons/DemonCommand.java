@@ -43,10 +43,10 @@ public class DemonCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        ServerLevel level = ((CraftPlayer) player).getHandle().serverLevel();
+        ServerLevel level = ((CraftPlayer) player).getHandle().level();
 
         DemonAnimal demon = new DemonAnimal(level, type);
-        demon.setPos(CraftLocation.toVec3D(player.getLocation()));
+        demon.setPos(CraftLocation.toVec3(player.getLocation()));
         level.addFreshEntity(demon);
 
         return true;

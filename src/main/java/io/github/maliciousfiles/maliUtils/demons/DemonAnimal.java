@@ -7,16 +7,21 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.goat.Goat;
-import net.minecraft.world.entity.monster.Spider;
+import net.minecraft.world.entity.monster.spider.Spider;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -30,11 +35,12 @@ public class DemonAnimal extends Spider {
         getEntityData().packDirty();
 
         this.type = type;
+        this.lootTable = type.getDefaultLootTable();
     }
 
     @Override
-    protected ResourceKey<LootTable> getDefaultLootTable() {
-        return type.getDefaultLootTable();
+    public Component getName() {
+        return Component.literal(StringUtils.capitalize(type.toShortString()));
     }
 
     @Override
@@ -67,26 +73,26 @@ public class DemonAnimal extends Spider {
     }
 
     @Override
-    protected SoundEvent getAmbientSound() {
-        return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.withDefaultNamespace(
+    public SoundEvent getAmbientSound() {
+        return BuiltInRegistries.SOUND_EVENT.getValue(Identifier.withDefaultNamespace(
                 "entity.%s.ambient".formatted(type.toShortString())));
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.withDefaultNamespace(
+    public SoundEvent getHurtSound(DamageSource source) {
+        return BuiltInRegistries.SOUND_EVENT.getValue(Identifier.withDefaultNamespace(
                 "entity.%s.hurt".formatted(type.toShortString())));
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.withDefaultNamespace(
+        return BuiltInRegistries.SOUND_EVENT.getValue(Identifier.withDefaultNamespace(
                 "entity.%s.death".formatted(type.toShortString())));
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.withDefaultNamespace(
+        this.playSound(BuiltInRegistries.SOUND_EVENT.getValue(Identifier.withDefaultNamespace(
                 "entity.%s.step".formatted(type.toShortString()))), 0.15F, 1.0F);
     }
 

@@ -1,5 +1,6 @@
 package io.github.maliciousfiles.maliUtils.freeze;
 
+import io.netty.channel.ChannelFutureListener;
 import net.minecraft.network.Connection;
 import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.PacketSendListener;
@@ -18,6 +19,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import javax.annotation.Nullable;
@@ -71,27 +73,33 @@ public class FreezeHandler implements Listener {
     private static class FreezeConnection extends ServerGamePacketListenerImpl {
 
         public FreezeConnection(ServerPlayer sp) {
-            super(sp.server, sp.connection.connection, sp, CommonListenerCookie.createInitial(sp.gameProfile, false));
+            super(sp.level().getServer(), sp.connection.connection, sp, CommonListenerCookie.createInitial(sp.gameProfile, false));
         }
 
         @Override
-        public void send(Packet<?> packet, PacketSendListener callbacks) {
-            if (packet instanceof ClientboundKeepAlivePacket) super.send(packet, callbacks);
+        public void send(Packet<?> packet, ChannelFutureListener listener) {
+            if (packet instanceof ClientboundKeepAlivePacket) super.send(packet, listener);
         }
 
         public void handlePlayerInput(ServerboundPlayerInputPacket packet) {}
         public void handleMoveVehicle(ServerboundMoveVehiclePacket packet) {}
         public void handleAcceptTeleportPacket(ServerboundAcceptTeleportationPacket packet) {}
+        public void handleAcceptPlayerLoad(ServerboundPlayerLoadedPacket packet) {}
         public void handleRecipeBookSeenRecipePacket(ServerboundRecipeBookSeenRecipePacket packet) {}
+        public void handleBundleItemSelectedPacket(ServerboundSelectBundleItemPacket packet) {}
         public void handleRecipeBookChangeSettingsPacket(ServerboundRecipeBookChangeSettingsPacket packet) {}
         public void handleSeenAdvancements(ServerboundSeenAdvancementsPacket packet) {}
         public void handleCustomCommandSuggestions(ServerboundCommandSuggestionPacket packet) {}
         public void handleSetCommandBlock(ServerboundSetCommandBlockPacket packet) {}
         public void handleSetCommandMinecart(ServerboundSetCommandMinecartPacket packet) {}
-        public void handlePickItem(ServerboundPickItemPacket packet) {}
+        public void handlePickItemFromBlock(ServerboundPickItemFromBlockPacket packet) {}
+        public void handlePickItemFromEntity(ServerboundPickItemFromEntityPacket packet) {}
         public void handleRenameItem(ServerboundRenameItemPacket packet) {}
         public void handleSetBeaconPacket(ServerboundSetBeaconPacket packet) {}
+        public void handleSetGameRule(ServerboundSetGameRulePacket packet) {}
         public void handleSetStructureBlock(ServerboundSetStructureBlockPacket packet) {}
+        public void handleSetTestBlock(ServerboundSetTestBlockPacket packet) {}
+        public void handleTestInstanceBlockAction(ServerboundTestInstanceBlockActionPacket packet) {}
         public void handleSetJigsawBlock(ServerboundSetJigsawBlockPacket packet) {}
         public void handleJigsawGenerate(ServerboundJigsawGeneratePacket packet) {}
         public void handleSelectTrade(ServerboundSelectTradePacket packet) {}
@@ -113,9 +121,11 @@ public class FreezeHandler implements Listener {
         public void handleAnimate(ServerboundSwingPacket packet) {}
         public void handlePlayerCommand(ServerboundPlayerCommandPacket packet) {}
         public void handlePingRequest(ServerboundPingRequestPacket packet) {}
+        public void handleAttack(ServerboundAttackPacket packet) {}
         public void handleInteract(ServerboundInteractPacket packet) {}
+        public void handleSpectateEntity(ServerboundSpectateEntityPacket packet) {}
         public void handleClientCommand(ServerboundClientCommandPacket packet) {}
-        public void handleContainerClose(ServerboundContainerClosePacket packet) {}
+        public void handleContainerClose(ServerboundContainerClosePacket packet, InventoryCloseEvent.Reason reason) {}
         public void handleContainerClick(ServerboundContainerClickPacket packet) {}
         public void handlePlaceRecipe(ServerboundPlaceRecipePacket packet) {}
         public void handleContainerButtonClick(ServerboundContainerButtonClickPacket packet) {}
@@ -124,12 +134,14 @@ public class FreezeHandler implements Listener {
         public void handlePlayerAbilities(ServerboundPlayerAbilitiesPacket packet) {}
         public void handleClientInformation(ServerboundClientInformationPacket packet) {}
         public void handleChangeDifficulty(ServerboundChangeDifficultyPacket packet) {}
+        public void handleChangeGameMode(ServerboundChangeGameModePacket packet) {}
         public void handleLockDifficulty(ServerboundLockDifficultyPacket packet) {}
         public void handleChatSessionUpdate(ServerboundChatSessionUpdatePacket packet) {}
         public void handleConfigurationAcknowledged(ServerboundConfigurationAcknowledgedPacket packet) {}
         public void handleChunkBatchReceived(ServerboundChunkBatchReceivedPacket packet) {}
-        public void handleDebugSampleSubscription(ServerboundDebugSampleSubscriptionPacket packet) {}
+        public void handleDebugSubscriptionRequest(ServerboundDebugSubscriptionRequestPacket packet) {}
         public void handleCustomPayload(ServerboundCustomPayloadPacket packet) {}
+        public void handleClientTickEnd(ServerboundClientTickEndPacket packet) {}
         public void handleResourcePackResponse(ServerboundResourcePackPacket packet) {}
         public void handleCookieResponse(ServerboundCookieResponsePacket packet) {}
     }
