@@ -28,7 +28,7 @@ public class SmiteCommand implements CommandExecutor, TabCompleter {
         }
 
         target.getWorld().strikeLightningEffect(target.getLocation());
-        target.setVelocity(target.getVelocity().setY(30));
+        target.setVelocity(target.getVelocity().setY(5));
         CommandUtil.success(sender, "Launched {} into the air!", target.getName());
 
         return true;

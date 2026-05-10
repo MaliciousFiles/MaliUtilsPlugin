@@ -1,7 +1,7 @@
 name: MaliUtils
 version: '1.0'
 main: io.github.maliciousfiles.maliUtils.MaliUtils
-api-version: '1.21'
+api-version: '26.1.2'
 authors: [ MaliciousFiles ]
 description: A plugin with various *utilities* for a Minecraft server admin.
 commands:

@@ -19,6 +19,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.equine.Mule;
 import net.minecraft.world.entity.animal.goat.Goat;
 import net.minecraft.world.entity.monster.spider.Spider;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -27,20 +28,23 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.apache.commons.lang3.StringUtils;
 
-public class DemonAnimal extends Spider {
-    private EntityType<?> type;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
-    public DemonAnimal(Level world, EntityType<? extends Animal> type) {
+public class DemonAnimal extends Spider {
+    private Animal entity;
+
+    public DemonAnimal(Level world, Animal entity) {
         super(EntityType.SPIDER, world);
         getEntityData().packDirty();
 
-        this.type = type;
-        this.lootTable = type.getDefaultLootTable();
+        this.entity = entity;
+        this.lootTable = entity.lootTable;
     }
 
     @Override
     public Component getName() {
-        return Component.literal(StringUtils.capitalize(type.toShortString()));
+        return entity.getName();
     }
 
     @Override
@@ -74,26 +78,29 @@ public class DemonAnimal extends Spider {
 
     @Override
     public SoundEvent getAmbientSound() {
-        return BuiltInRegistries.SOUND_EVENT.getValue(Identifier.withDefaultNamespace(
-                "entity.%s.ambient".formatted(type.toShortString())));
+        return entity.getAmbientSound();
     }
 
     @Override
     public SoundEvent getHurtSound(DamageSource source) {
-        return BuiltInRegistries.SOUND_EVENT.getValue(Identifier.withDefaultNamespace(
-                "entity.%s.hurt".formatted(type.toShortString())));
+        return entity.getHurtSound(source);
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return BuiltInRegistries.SOUND_EVENT.getValue(Identifier.withDefaultNamespace(
-                "entity.%s.death".formatted(type.toShortString())));
+        return entity.getDeathSound();
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(BuiltInRegistries.SOUND_EVENT.getValue(Identifier.withDefaultNamespace(
-                "entity.%s.step".formatted(type.toShortString()))), 0.15F, 1.0F);
+        try {
+            Method method = entity.getClass().getDeclaredMethod("playStepSound", BlockPos.class, BlockState.class);
+            method.setAccessible(true);
+            method.invoke(entity, pos, state);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
@@ -106,7 +113,7 @@ public class DemonAnimal extends Spider {
                 trackingPosition().z(),
                 entityTrackerEntry.getLastSentXRot(),
                 entityTrackerEntry.getLastSentYRot(),
-                type,
+                entity.getType(),
                 0,
                 entityTrackerEntry.getLastSentMovement(),
                 entityTrackerEntry.getLastSentYHeadRot()

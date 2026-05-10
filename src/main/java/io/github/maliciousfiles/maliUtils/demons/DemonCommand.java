@@ -4,6 +4,13 @@ import io.github.maliciousfiles.maliUtils.utils.CommandUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.chicken.Chicken;
+import net.minecraft.world.entity.animal.cow.Cow;
+import net.minecraft.world.entity.animal.equine.Donkey;
+import net.minecraft.world.entity.animal.equine.Horse;
+import net.minecraft.world.entity.animal.equine.Mule;
+import net.minecraft.world.entity.animal.pig.Pig;
+import net.minecraft.world.entity.animal.sheep.Sheep;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,21 +38,22 @@ public class DemonCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        EntityType<? extends Animal> type = args[0].equalsIgnoreCase("sheep") ? EntityType.SHEEP :
-                args[0].equalsIgnoreCase("pig") ? EntityType.PIG :
-                args[0].equalsIgnoreCase("cow") ? EntityType.COW :
-                args[0].equalsIgnoreCase("chicken") ? EntityType.CHICKEN :
-                args[0].equalsIgnoreCase("horse") ? EntityType.HORSE :
-                args[0].equalsIgnoreCase("donkey") ? EntityType.DONKEY :
-                args[0].equalsIgnoreCase("mule") ? EntityType.MULE : null;
-        if (type == null) {
+        ServerLevel level = ((CraftPlayer) player).getHandle().level();
+
+        net.minecraft.world.entity.animal.Animal entity =
+                args[0].equalsIgnoreCase("sheep") ? new Sheep(EntityType.SHEEP, level) :
+                args[0].equalsIgnoreCase("pig") ? new Pig(EntityType.PIG, level) :
+                args[0].equalsIgnoreCase("cow") ? new Cow(EntityType.COW, level) :
+                args[0].equalsIgnoreCase("chicken") ? new Chicken(EntityType.CHICKEN, level) :
+                args[0].equalsIgnoreCase("horse") ? new Horse(EntityType.HORSE, level) :
+                args[0].equalsIgnoreCase("donkey") ? new Donkey(EntityType.DONKEY, level) :
+                args[0].equalsIgnoreCase("mule") ? new Mule(EntityType.MULE, level) : null;
+        if (entity == null) {
             CommandUtil.error(sender, "Invalid entity");
             return true;
         }
 
-        ServerLevel level = ((CraftPlayer) player).getHandle().level();
-
-        DemonAnimal demon = new DemonAnimal(level, type);
+        DemonAnimal demon = new DemonAnimal(level, entity);
         demon.setPos(CraftLocation.toVec3(player.getLocation()));
         level.addFreshEntity(demon);
 
